@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bifrost Pulse Web - Example</title>
+        <meta charset="utf-8">
+        <script type="importmap">
+            {
+                "imports": {
+                    "bifrost-pulse-web": "./lib/bifrost-pulse-web.js"
+                }
+            }
+        </script>
+        <script type="module">
+            import { init, leftDevice, rightDevice } from 'bifrost-pulse-web';
+            await init();
+
+            leftDevice.addEventListener('input', e => {
+                for(let finger in leftDevice.pull) {
+                    document.querySelector('#left .pull.' + finger).setAttribute('value', leftDevice.pull[finger]);
+                }
+            });
+            console.log(leftDevice, rightDevice);
+        </script>
+        <style>
+            #left {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Bifrost Pulse Web</h1>
+        <div id="left">
+            <progress class="thumb pull" value="0" max="16383"></progress>
+            <progress class="index pull" value="0" max="16383"></progress>
+            <progress class="middle pull" value="0" max="16383"></progress>
+            <progress class="ring pull" value="0" max="16383"></progress>
+            <progress class="pinky pull" value="0" max="16383"></progress>
+        </div>
+    </body>
+</html>

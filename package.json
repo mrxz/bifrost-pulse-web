@@ -1,0 +1,27 @@
+{
+  "name": "bifrost-pulse-web",
+  "version": "1.0.0",
+  "description": "Library for interacting with the Bifrost Pulse using WebHID",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/bifrost-pulse-web.js",
+    "dev": "node esbuild.config.mjs -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrxz/bifrost-pulse-web.git"
+  },
+  "author": "Noeri Huisman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrxz/bifrost-pulse-web/issues"
+  },
+  "homepage": "https://github.com/mrxz/bifrost-pulse-web#readme",
+  "devDependencies": {
+    "@types/w3c-web-hid": "^1.0.6",
+    "esbuild": "0.20.2",
+    "esbuild-serve": "^1.0.1",
+    "typescript": "^5.4.3"
+  }
+}
