@@ -49,4 +49,5 @@ export function onDeviceDisconnect(device: HIDDevice) {
 
 export async function requestDevice(filter = true) {
     const devices = await navigator.hid.requestDevice({ filters: filter ? HID_FILTERS : [] });
+    //devices.forEach()
 }

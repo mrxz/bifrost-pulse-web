@@ -13,4 +13,4 @@ export async function init() {
     }
 }
 
-export { leftDevice, rightDevice } from "./connect";
+export { leftDevice, rightDevice, requestDevice } from "./connect";
