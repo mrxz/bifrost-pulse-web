@@ -10,12 +10,19 @@ const FINGERS: Array<Fingers> = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 
 export class PulseDevice extends EventTarget {
     hidDevice: HIDDevice;
+    // Input
     pull: FingerState<number>;
     pullNormalized: FingerState<number>;
     splay: FingerState<number>;
 
     // Calibration
     pullCalibration: FingerState<{min: number, max: number}>;
+
+    // Output
+    springs: FingerState<{one: number, two: number}>;
+    vibration: FingerState<{intensity: number, frequency: number}>;
+    private outputBuffer: Uint8Array = new Uint8Array(5*4);
+    private outputBufferView: DataView = new DataView(this.outputBuffer.buffer);
 
     constructor(hidDevice: HIDDevice) {
         super();
@@ -24,11 +31,31 @@ export class PulseDevice extends EventTarget {
         this.pullNormalized = initFingerState(() => 0);
         this.splay = initFingerState(() => 0);
         this.pullCalibration = initFingerState(() => ({ min: 0, max: 16383 }));
+        this.springs = initFingerState(() => ({ one: 25, two: -25 }));
+        this.vibration = initFingerState(() => ({ intensity: 0, frequency: 0 }));
 
         if(!this.hidDevice.opened) {
-            this.hidDevice.open();
+            this.hidDevice.open().then(_ => {
+                // Send default output report
+                this.sendOutputReport();
+            });
         }
         this.hidDevice.addEventListener('inputreport', e => this.updateState(e.data))
+    }
+
+    sendOutputReport() {
+        this.outputBuffer[0] = 2;
+        for(let i = 0; i < 5; i++) {
+            const finger = FINGERS[i];
+            const springs = this.springs[finger];
+            const vibration = this.vibration[finger];
+            this.outputBuffer[i*4] = springs.one;
+            this.outputBuffer[i*4 + 1] = springs.two;
+            this.outputBuffer[i*4 + 2] = vibration.intensity;
+            this.outputBuffer[i*4 + 3] = vibration.frequency;
+        }
+
+        this.hidDevice.sendReport(2, this.outputBufferView);
     }
 
     private updateState(data: DataView) {

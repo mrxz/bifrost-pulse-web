@@ -33,6 +33,29 @@
                         document.querySelector(`#${side} .pull-normalized.${finger}`).setAttribute('value', pulseDevice.pullNormalized[finger]);
                     }
                 });
+                for(let finger in pulseDevice.springs) {
+                    const currentFinger = finger;
+                    document.querySelector(`#${side} .spring-one.${finger}`).addEventListener('change', e => {
+                        pulseDevice.springs[currentFinger].one = e.target.value;
+                        e.target.nextElementSibling.innerHTML = e.target.value;
+                        pulseDevice.sendOutputReport();
+                    });
+                    document.querySelector(`#${side} .spring-two.${finger}`).addEventListener('change', e => {
+                        pulseDevice.springs[currentFinger].two = e.target.value;
+                        e.target.nextElementSibling.innerHTML = e.target.value;
+                        pulseDevice.sendOutputReport();
+                    });
+                    document.querySelector(`#${side} .vibration-intensity.${finger}`).addEventListener('change', e => {
+                        pulseDevice.vibration[currentFinger].intensity = e.target.value;
+                        e.target.nextElementSibling.innerHTML = e.target.value;
+                        pulseDevice.sendOutputReport();
+                    });
+                    document.querySelector(`#${side} .vibration-frequency.${finger}`).addEventListener('change', e => {
+                        pulseDevice.vibration[currentFinger].frequency = e.target.value;
+                        e.target.nextElementSibling.innerHTML = e.target.value;
+                        pulseDevice.sendOutputReport();
+                    });
+                }
             }
             if(leftDevice) {
                 setupDevice('left', leftDevice);
@@ -79,6 +102,92 @@
                 <progress class="middle pull-normalized" value="0" max="1"></progress>
                 <progress class="ring pull-normalized" value="0" max="1"></progress>
                 <progress class="pinky pull-normalized" value="0" max="1"></progress>
+
+                <p>Springs:</p>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="thumb spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="index spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="middle spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="ring spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="pinky spring-one">
+                    <span>25</span>
+                </div>
+                <br>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="thumb spring-two">
+                    <span>-25</span>
+                </div>
+                <div>
+                   <input type="range" min="-128" max="127" value="-25" class="index spring-two">
+                   <span>-25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="middle spring-two">
+                    <span>-25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="ring spring-two">
+                    <span>-25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="pinky spring-two">
+                    <span>-25</span>
+                </div>
+
+                <p>Vibrations:</p>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="thumb vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="index vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="middle vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="ring vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="pinky vibration-intensity">
+                    <span>0</span>
+                </div>
+                <br>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="thumb vibration-frequency">
+                    <span>0</span>
+                </div>
+                <div>
+                   <input type="range" min="0" max="255" value="0" class="index vibration-frequency">
+                   <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="middle vibration-frequency">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="ring vibration-frequency">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="pinky vibration-frequency">
+                    <span>0</span>
+                </div>
             </div>
             <div id="right">
                 <h3>Right</h3>
@@ -87,6 +196,103 @@
                 <progress class="middle pull" value="0" max="16383"></progress>
                 <progress class="ring pull" value="0" max="16383"></progress>
                 <progress class="pinky pull" value="0" max="16383"></progress>
+
+                <p>Normalized:</p>
+                <div>
+                    <button class="cal-flat">Flat hand</button>
+                    <button class="cal-fist">Fist</button>
+                </div>
+                <progress class="thumb pull-normalized" value="0" max="1"></progress>
+                <progress class="index pull-normalized" value="0" max="1"></progress>
+                <progress class="middle pull-normalized" value="0" max="1"></progress>
+                <progress class="ring pull-normalized" value="0" max="1"></progress>
+                <progress class="pinky pull-normalized" value="0" max="1"></progress>
+
+                <p>Springs:</p>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="thumb spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="index spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="middle spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="ring spring-one">
+                    <span>25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="25" class="pinky spring-one">
+                    <span>25</span>
+                </div>
+                <br>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="thumb spring-two">
+                    <span>-25</span>
+                </div>
+                <div>
+                   <input type="range" min="-128" max="127" value="-25" class="index spring-two">
+                   <span>-25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="middle spring-two">
+                    <span>-25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="ring spring-two">
+                    <span>-25</span>
+                </div>
+                <div>
+                    <input type="range" min="-128" max="127" value="-25" class="pinky spring-two">
+                    <span>-25</span>
+                </div>
+
+                <p>Vibrations:</p>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="thumb vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="index vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="middle vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="ring vibration-intensity">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="pinky vibration-intensity">
+                    <span>0</span>
+                </div>
+                <br>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="thumb vibration-frequency">
+                    <span>0</span>
+                </div>
+                <div>
+                   <input type="range" min="0" max="255" value="0" class="index vibration-frequency">
+                   <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="middle vibration-frequency">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="ring vibration-frequency">
+                    <span>0</span>
+                </div>
+                <div>
+                    <input type="range" min="0" max="255" value="0" class="pinky vibration-frequency">
+                    <span>0</span>
+                </div>
             </div>
         </div>
     </body>
